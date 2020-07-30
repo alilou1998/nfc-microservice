@@ -2,19 +2,21 @@ package com.computime.nfcmicroservice.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Tag {
     @Id
     private String uid;
-    private String texte;
+    @OneToOne
+    private Personne personne;
 
     public Tag() {
     }
 
-    public Tag(String uid,String texte) {
+    public Tag(String uid,Personne personne) {
         this.uid=uid;
-        this.texte=texte;
+        this.personne=personne;
     }
 
     public String getUid() {
@@ -25,11 +27,11 @@ public class Tag {
         this.uid = uid;
     }
 
-    public String getTexte() {
-        return texte;
+    public Personne getPersonne() {
+        return personne;
     }
 
-    public void setTexte(String texte) {
-        this.texte = texte;
+    public void setPersonne(Personne personne) {
+        this.personne = personne;
     }
 }

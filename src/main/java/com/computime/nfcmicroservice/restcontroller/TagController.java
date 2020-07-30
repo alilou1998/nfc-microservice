@@ -1,35 +1,54 @@
 package com.computime.nfcmicroservice.restcontroller;
 
 
-import com.computime.nfcmicroservice.dao.TagDao;
+import com.computime.nfcmicroservice.dao.PersonneDao;
+import com.computime.nfcmicroservice.entities.Personne;
 import com.computime.nfcmicroservice.entities.Tag;
+import com.computime.nfcmicroservice.service.NFCServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class TagController {
 
 
-    private final TagDao tagDao;
+    private final NFCServiceImpl nfcService;
+    private final PersonneDao personneDao;
 
     @Autowired
-    public TagController(TagDao tagDao) {
-        this.tagDao = tagDao;
+    public TagController(NFCServiceImpl nfcService, PersonneDao personneDao) {
+        this.nfcService = nfcService;
+        this.personneDao = personneDao;
     }
 
     @GetMapping("/tags")
-    public List<Tag> listTag(){
-        return tagDao.findAll();
+    public List<Tag> listTag() {
+        return nfcService.allTag();
     }
 
     @GetMapping("/tags/{uid}")
-    public Tag getTag(@PathVariable("uid") String s){
-        return tagDao.findByUid(s);
+    public Tag getTag(@PathVariable("uid") String s) {
+
+        return nfcService.findParUid(s);
+    }
+
+
+    @PostMapping("/tags")
+    public Tag addTag(@RequestBody String string) {
+        List<String> strings = nfcService.tagFormat(string);
+        Personne personne = new Personne();
+        personne.setNom(strings.get(1));
+        personne.setPrenom(strings.get(2));
+
+        personneDao.save(personne);
+
+        Tag tag = new Tag();
+        tag.setUid(strings.get(0));
+        tag.setPersonne(personne);
+
+        return nfcService.addTag(tag);
     }
 
 }
