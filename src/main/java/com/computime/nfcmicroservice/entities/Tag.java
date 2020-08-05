@@ -1,5 +1,6 @@
 package com.computime.nfcmicroservice.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
@@ -8,7 +9,7 @@ import javax.persistence.OneToOne;
 public class Tag {
     @Id
     private String uid;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Personne personne;
 
     public Tag() {

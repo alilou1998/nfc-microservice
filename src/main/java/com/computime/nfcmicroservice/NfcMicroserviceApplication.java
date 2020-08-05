@@ -31,7 +31,6 @@ public class NfcMicroserviceApplication implements CommandLineRunner {
         Personne personne = new Personne("ali","alaoui");
         personneDao.save(personne);
         Tag tag = new Tag("TAG-1",personne);
-
         tagDao.save(tag);
     }
 }
