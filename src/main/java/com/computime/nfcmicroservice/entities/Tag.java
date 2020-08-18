@@ -9,7 +9,7 @@ import javax.persistence.OneToOne;
 public class Tag {
     @Id
     private String uid;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.DETACH)
     private Personne personne;
 
     public Tag() {

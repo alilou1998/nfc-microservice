@@ -9,6 +9,7 @@ import com.computime.nfcmicroservice.service.NFCServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,40 +30,43 @@ public class TagController {
     }
 
     @GetMapping("/tags")
-    public List<Tag> listTag() {
-        return nfcService.allTag();
+    public ResponseEntity<List<Tag>> listTag() {
+        return ResponseEntity.ok(nfcService.allTag());
     }
 
     @GetMapping("/tags/{uid}")
-    public Tag getTag(@PathVariable("uid") String s) {
+    public ResponseEntity<Tag> getTag(@PathVariable("uid") String s) {
 
-        return nfcService.findParUid(s);
+        return ResponseEntity.ok(nfcService.findParUid(s));
     }
 
-
-
-
     @PostMapping("/tags")
-    public Tag addTag(@RequestBody mData mdata) {
+    public ResponseEntity<Tag> addTag(@RequestBody mData mdata) {
         logger.info(mdata.getM());
         List<String> strings = nfcService.tagFormat(mdata.getM());
-        Personne personne = new Personne();
-        personne.setNom(strings.get(1));
-
-        personne.setPrenom(strings.get(2));
-
-        personneDao.save(personne);
-
+        Personne personne;
+        Integer id;
         Tag tag = new Tag();
-        tag.setUid(strings.get(0));
+        if(personneDao.findByNomAndPrenom(strings.get(1),strings.get(2))!=null){
+            id = personneDao.getId(strings.get(1),strings.get(2));
+            tag.setUid(strings.get(0));
+            personne = personneDao.getOne(id);
+        }else{
+            personne = new Personne();
+            personne.setNom(strings.get(1));
+            personne.setPrenom(strings.get(2));
+            personneDao.save(personne);
+            tag.setUid(strings.get(0));
+        }
         tag.setPersonne(personne);
 
-        return nfcService.addTag(tag);
+        return ResponseEntity.ok(nfcService.addTag(tag));
     }
 
     @DeleteMapping("/tags/{uid}")
-    public void deleteTag(@PathVariable("uid") String s ){
+    public ResponseEntity<Void> deleteTag(@PathVariable("uid") String s ){
         nfcService.deleteTag(s);
+        return ResponseEntity.noContent().build();
     }
 
 }

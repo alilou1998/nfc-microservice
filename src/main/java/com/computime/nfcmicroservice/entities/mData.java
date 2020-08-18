@@ -1,8 +1,5 @@
 package com.computime.nfcmicroservice.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
 public class mData {
 
     private String m;
