@@ -36,7 +36,6 @@ public class TagController {
 
     @GetMapping("/tags/{uid}")
     public ResponseEntity<Tag> getTag(@PathVariable("uid") String s) {
-
         return ResponseEntity.ok(nfcService.findParUid(s));
     }
 
@@ -53,8 +52,8 @@ public class TagController {
             personne = personneDao.getOne(id);
         }else{
             personne = new Personne();
-            personne.setNom(strings.get(1));
-            personne.setPrenom(strings.get(2));
+            personne.setNom(strings.get(1).toUpperCase());
+            personne.setPrenom(strings.get(2).substring(0,1).toUpperCase()+strings.get(2).substring(1));
             personneDao.save(personne);
             tag.setUid(strings.get(0));
         }
