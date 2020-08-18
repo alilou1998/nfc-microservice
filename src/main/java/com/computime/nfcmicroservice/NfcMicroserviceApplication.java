@@ -9,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 @SpringBootApplication
 public class NfcMicroserviceApplication implements CommandLineRunner {
 
@@ -20,6 +21,8 @@ public class NfcMicroserviceApplication implements CommandLineRunner {
         this.tagDao = tagDao;
         this.personneDao = personneDao;
     }
+
+
 
 
     public static void main(String[] args) {
