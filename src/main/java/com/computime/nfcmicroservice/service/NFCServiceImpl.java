@@ -14,12 +14,15 @@ import java.util.List;
 @Transactional
 public class NFCServiceImpl implements NFCService {
 
+    private final TagDao tagDao;
 
     @Autowired
-    private TagDao tagDao;
+    public NFCServiceImpl(TagDao tagDao) {
+        this.tagDao = tagDao;
+    }
 
     @Override
-    public List<String> tagFormat(String s){
+    public List<String> tagFormat(String s) {
         return formatCSV(s);
     }
 
@@ -44,13 +47,12 @@ public class NFCServiceImpl implements NFCService {
     }
 
 
-    private static List<String> formatCSV(String s){
+    private static List<String> formatCSV(String s) {
         List<String> list;
-        String seperator = ",";
-        list = Arrays.asList(s.split(seperator));
+        String separator = ",";
+        list = Arrays.asList(s.split(separator));
         return list;
     }
-
 
 
 }
